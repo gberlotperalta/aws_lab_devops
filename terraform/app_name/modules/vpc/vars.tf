@@ -1,13 +1,18 @@
+
+variable "app_name" {
+  default = "web_app"
+}
+
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
-variable "tenancy" {
-  default = "default"
-}
-
 variable "vpc_id" {}
 
-variable "subnet_cidr" {
+variable "subnet1_cidr" {
   default = "10.0.1.0/24"
+}
+
+variable "subnet2_cidr" {
+  default = "10.0.2.0/24"
 }
