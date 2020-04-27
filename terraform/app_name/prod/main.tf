@@ -6,7 +6,7 @@ provider "aws" {
 module "my_vpc" {
   source      = "../modules/vpc"
   vpc_cidr    = "192.168.0.0/16"
-  vpc_id      = "${module.my_vpc.vpc_id}"
+  vpc_id      = "${module.my_vpc.terra_vpc_id}"
   subnet1_cidr = "192.168.1.0/24"
   subnet2_cidr = "192.168.2.0/24"
 }
@@ -17,6 +17,6 @@ module "my_ec2" {
   ami_id        = "ami-085925f297f89fce1"
   instance_type = "t2.medium"
   ec2_count     = 1
-  vpc_security_group_ids = ["${module.my_vpc.terra_sg_ssh_22_id}"]
+  #vpc_security_group_ids = ["${module.my_vpc.terra_sg_ssh_22_id}"]
   
 }
