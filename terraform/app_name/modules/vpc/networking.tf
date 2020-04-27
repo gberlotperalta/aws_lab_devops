@@ -78,6 +78,7 @@ resource "aws_route_table_association" "rt_aso_pri" {
   route_table_id = "${aws_route_table.terra_private_rt.id}"
 }
 
+# When everything is running create NACL
 
 output "vpc_id" {
   value = "${aws_vpc.terra_vpc.id}"

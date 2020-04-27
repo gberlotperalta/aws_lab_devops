@@ -1,11 +1,12 @@
-variable "ec2_count" {
-  default = "1"
-}
 
-variable "ami_id" {}
+variable "ami_id" {
+  default = "ami-085925f297f89fce1"
+}
 
 variable "instance_type" {
   default = "t2.micro"
 }
+
+variable "vpc_id" {}
 
 variable "subnet_id" {}
