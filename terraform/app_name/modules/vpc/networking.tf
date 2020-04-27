@@ -84,10 +84,10 @@ output "vpc_id" {
   value = "${aws_vpc.terra_vpc.id}"
 }
 
-output "public_subnet_id" {
+output "public_subnet1_id" {
   value = "${aws_subnet.terra_pub_subnet.id}"
 }
 
-output "private_subnet_id" {
+output "private_subnet2_id" {
   value = "${aws_subnet.terra_pri_subnet.id}"
 }
