@@ -69,7 +69,7 @@ resource "aws_route_table" "terra_private_rt" {
 # Route table association with public subnets
 resource "aws_route_table_association" "rt_aso_pub" {
   subnet_id      = "${aws_subnet.terra_pub_subnet.id}"
-  route_table_id = "${aws_route_table.terra_public_rt}"
+  route_table_id = "${aws_route_table.terra_public_rt.id}"
 }
 
 # Route table association with private subnets
