@@ -12,5 +12,3 @@ variable "ec2_count" {
 }
 
 variable "subnet_id" {}
-
-variable "vpc_id" {}

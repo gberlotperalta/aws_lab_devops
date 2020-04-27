@@ -86,6 +86,57 @@ resource "aws_route_table_association" "rt_aso_pri" {
   route_table_id = "${aws_route_table.terra_private_rt.id}"
 }
 
+
+#Security Groups for SSH (port 22)
+resource "aws_security_group" "terra_sg_ssh_22" {
+  vpc_id = "${aws_vpc.terra_vpc.id}"
+
+  # SSH access from the VPC
+  ingress {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terra_sg_ssh_22"
+  }
+}
+
+#Security Group for Web App (port 80)
+resource "aws_security_group" "terra_sg_http_80" {
+  vpc_id = "${aws_vpc.terra_vpc.id}"
+
+  # Http access from web
+  ingress {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terra_sg_http_80"
+  }
+}
+
+
+
 # When everything is running create NACL
 
 output "terra_vpc_id" {
@@ -98,4 +149,12 @@ output "terra_public_subnet1_id" {
 
 output "terra_private_subnet2_id" {
   value = "${aws_subnet.terra_pri_subnet.id}"
+}
+
+output "terra_sg_ssh_22_id" {
+  value = "${aws_security_group.terra_sg_ssh_22.id}"
+}
+
+output "terra_sg_http_80_id" {
+  value = "${aws_security_group.terra_sg_http_80.id}"
 }

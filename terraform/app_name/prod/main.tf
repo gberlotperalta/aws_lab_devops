@@ -12,10 +12,11 @@ module "my_vpc" {
   subnet2_cidr = "192.168.2.0/24"
 }
 
-module "my_ec2" {
+module "my_ec2_jenkins" {
   source        = "../modules/ec2"
   subnet_id     = "${module.my_vpc.terra_public_subnet1_id}"
   ami_id        = "ami-085925f297f89fce1"
   instance_type = "t2.medium"
+  vpc_security_group_ids = ["${module.my_vpc.terra_sg_ssh_22_id}"]
   
 }
