@@ -1,6 +1,6 @@
 
 variable "app_name" {
-  default = "web_app"
+  default = "terra_webapp_"
 }
 
 variable "vpc_cidr" {
