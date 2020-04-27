@@ -7,7 +7,8 @@ module "my_vpc" {
   source      = "../modules/vpc"
   vpc_cidr    = "192.168.0.0/16"
   vpc_id      = "${module.my_vpc.id}"
-  subnet_cidr = "192.168.1.0/24"
+  subnet1_cidr = "192.168.1.0/24"
+  subnet2_cidr = "192.168.2.0/24"
 }
 
 module "my_ec2" {
