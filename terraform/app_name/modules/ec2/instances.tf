@@ -1,5 +1,4 @@
 resource "aws_instance" "jenkins" {
-  vpc_id = "${var.vpc_id}"
   subnet_id     = "${var.subnet_id}"
   ami           = "${var.ami_id}"
   instance_type = "${var.instance_type}"
