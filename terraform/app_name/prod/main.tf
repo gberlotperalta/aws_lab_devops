@@ -17,10 +17,10 @@ module "my_ec2" {
   ami_id        = "ami-085925f297f89fce1"
   instance_type = "t2.micro"
   ec2_count     = 1
-  vpc_security_group_ids = [
-    "${module.my_vpc.terra_sg_ssh_22_id}",
-    "${module.my_vpc.terra_sg_http_80_id}"
-    ]
+  #vpc_security_group_ids = [
+  #  "${module.my_vpc.terra_sg_ssh_22_id}",
+  #  "${module.my_vpc.terra_sg_http_80_id}"
+  #  ]
 
 
 }
