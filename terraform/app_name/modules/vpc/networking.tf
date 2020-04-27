@@ -108,6 +108,7 @@ resource "aws_security_group" "terra_sg_ssh_22" {
 
   tags = {
     Name = "terra_sg_ssh_22"
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -132,6 +133,7 @@ resource "aws_security_group" "terra_sg_http_80" {
 
   tags = {
     Name = "terra_sg_http_80"
+    Environment = "${var.environment_tag}"
   }
 }
 
