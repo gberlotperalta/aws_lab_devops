@@ -5,6 +5,7 @@ resource "aws_instance" "ec2server" {
   ami           = "${var.ami_id}"
   instance_type = "${var.instance_type}"
   count         = "${var.ec2_count}"
+  vpc_security_group_ids = "var.vpc_security_group_ids"
   
   tags = {
     Name = "Jenkins"
