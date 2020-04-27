@@ -2,9 +2,12 @@
 resource "aws_vpc" "terra_vpc" {
   cidr_block       = "${var.vpc_cidr}"
   instance_tenancy = "default"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.app_name}_vpc"
+    Name = "${var.app_name}vpc",
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -14,7 +17,8 @@ resource "aws_subnet" "terra_pub_subnet" {
   cidr_block = "${var.subnet1_cidr}"
 
   tags = {
-    Name = "${var.app_name}_pub_subnet"
+    Name = "${var.app_name}pub_subnet",
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -24,7 +28,8 @@ resource "aws_subnet" "terra_pri_subnet" {
   cidr_block = "${var.subnet2_cidr}"
 
   tags = {
-    Name = "${var.app_name}_pri_subnet"
+    Name = "${var.app_name}pri_subnet",
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -32,7 +37,8 @@ resource "aws_subnet" "terra_pri_subnet" {
 resource "aws_internet_gateway" "terra_ig" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
   tags = {
-    Name = "${var.app_name}_internet_gateway"
+    Name = "${var.app_name}internet_gateway",
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -53,7 +59,8 @@ resource "aws_route_table" "terra_public_rt" {
   }
 
   tags = {
-    Name = "${var.app_name}_public_rt"
+    Name = "${var.app_name}public_rt",
+    Environment = "${var.environment_tag}"
   }
 }
 
@@ -62,7 +69,8 @@ resource "aws_route_table" "terra_private_rt" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
 
   tags = {
-    Name = "${var.app_name}_private_rt"
+    Name = "${var.app_name}private_rt",
+    Environment = "${var.environment_tag}"
   }
 }
 

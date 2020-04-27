@@ -5,6 +5,7 @@ provider "aws" {
 
 module "my_vpc" {
   source      = "../modules/vpc"
+  ec2_count     = 1
   vpc_cidr    = "192.168.0.0/16"
   vpc_id      = "${module.my_vpc.terra_vpc_id}"
   subnet1_cidr = "192.168.1.0/24"

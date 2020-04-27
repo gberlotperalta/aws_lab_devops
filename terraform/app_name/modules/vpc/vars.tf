@@ -16,3 +16,7 @@ variable "subnet1_cidr" {
 variable "subnet2_cidr" {
   default = "10.0.2.0/24"
 }
+
+variable "environment_tag" {
+  default = "Production"
+}

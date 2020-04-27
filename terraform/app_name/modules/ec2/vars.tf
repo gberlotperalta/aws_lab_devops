@@ -7,4 +7,10 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
+variable "ec2_count" {
+  default = "2"
+}
+
 variable "subnet_id" {}
+
+variable "vpc_id" {}
