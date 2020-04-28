@@ -6,7 +6,7 @@ provider "aws" {
 module "vpc" {
   source      = "../modules/vpc"
   vpc_cidr    = "192.168.0.0/16"
-  vpc_id      = "${module.my_vpc.terra_vpc_id}"
+  vpc_id      = "${module.vpc.terra_vpc_id}"
   subnet1_cidr = "192.168.1.0/24"
   subnet2_cidr = "192.168.2.0/24"
 }
