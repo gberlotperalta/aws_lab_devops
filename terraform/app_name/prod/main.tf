@@ -30,10 +30,9 @@ module "ec2_jenkins" {
 
 }
 
-module "ec2_docker_web" {
+module "ec2_dcoker_web" {
   source        = "../modules/ec2"
   subnet_id     = "${module.vpc.terra_public_subnet1_id}"
-  
   #Use t3a.small cause got 2cpu and 2gb of ram and it's value is: 0,0188 USD per hour
   instance_type = "t3a.small"
   ami_id        = "ami-085925f297f89fce1"
@@ -45,7 +44,8 @@ module "ec2_docker_web" {
   #  ]
 
   tags = {
-    Name = "docker_web"
+    Name = "ec2_dcoker_web"
   }
 
 }
+
