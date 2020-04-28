@@ -13,7 +13,6 @@ module "vpc" {
 
 module "ec2_jenkins" {
   source        = "../modules/ec2"
-  name        = "jenkins"
   subnet_id     = "${module.vpc.terra_public_subnet1_id}"
   #Use t3a.small cause got 2cpu and 2gb of ram and it's value is: 0,0188 USD per hour
   instance_type = "t3a.small"
