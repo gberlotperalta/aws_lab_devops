@@ -1,0 +1,110 @@
+---
+- name: Ensure Jenkins dependencies are installed.
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+    state: present
+
+- name: Import Jenkins CI key
+  apt_key: url="{{jenkins_apt_key}}" state=present
+ 
+- name: Download Jenkins repo
+  apt_repository: repo="{{jenkins_repo}}" state=present
+ 
+- name: Install jenkins
+  apt: name=jenkins update_cache=yes state=present
+  notify: restart jenkins   
+
+
+- name: Set the Jenkins home directory.
+  lineinfile:
+    dest: "{{ jenkins_init_file }}"
+    regexp: '^JENKINS_HOME=.*'
+    line: 'JENKINS_HOME={{ jenkins_home }}'
+
+- name: Set HTTP port in Jenkins config.
+  lineinfile:
+    backrefs: true
+    dest: "{{ jenkins_init_file }}"
+    regexp: '^{{ jenkins_http_port_param }}='
+    line: '{{ jenkins_http_port_param }}={{ jenkins_http_port }}'
+  notify: restart jenkins
+
+- name: Create custom init scripts directory.
+  file:
+    path: "{{ jenkins_home }}/init.groovy.d"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+
+- name: copy groovy script to disable setup wizard
+  template:
+    src: basic-security.groovy-disable-wizard.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+       
+- name: Modify variables in init file.
+  lineinfile:
+    dest: "{{ jenkins_init_file }}"
+    insertafter: '^{{ item.option }}='
+    regexp: '^{{ item.option }}=\"\${{ item.option }} '
+    line: '{{ item.option }}="${{ item.option }} {{ item.value }}"'
+    state: present
+  with_items: "{{ jenkins_init_changes }}"
+  notify: restart jenkins
+
+- name: copy groovy script to disable CSRF proteccion, so plugins can be installed with ansible
+  template:
+    src: basic-disable-csrf-protection.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+  notify: restart jenkins
+
+- name: copy groovy security script for creating default user admin
+  template:
+    src: basic-security.groovy-users.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+  notify: restart jenkins
+
+- name: Change ownership to root of Jenkins home directory
+  file:
+    path: "{{ jenkins_home }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+
+- name: Change ownership to root of Jenkins cache  directory
+  file:
+    path: "{{ jenkins_cache }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+
+- name: Change ownership to root of Jenkins log  directory
+  file:
+    path: "{{ jenkins_log }}"
+    state: directory
+    recurse: yes
+    owner: root
+    group: root
+
+- name: Set user root to run Jenkins
+  lineinfile:
+    backrefs: true
+    dest: "{{ jenkins_init_file }}"
+    regexp: '^{{ jenkins_user_service_param }}='
+    line: '{{ jenkins_user_service_param }}={{ jenkins_user_service }}'
+  notify: restart jenkins
+
+

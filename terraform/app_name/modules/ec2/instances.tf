@@ -7,9 +7,6 @@ resource "aws_instance" "ec2server" {
   count         = "${var.ec2_count}"
   #vpc_security_group_ids = "var.vpc_security_group_ids"
   
-  tags = {
-    Name = "Jenkins"
-  }
 }
 
 

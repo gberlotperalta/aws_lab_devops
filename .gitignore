@@ -2,3 +2,4 @@
 .ansible
 *.code-workspace
 *console*.log
+*.pem

@@ -1,0 +1,20 @@
+---
+
+- name: Install Jenkins plugins.
+  jenkins_plugin:
+    name: "{{ item }}"
+    jenkins_home: "{{ jenkins_home }}"
+    url_username: "{{ jenkins_admin_username }}"
+    url_password: "{{ jenkins_admin_password }}"
+    state: present
+    timeout: 30
+    updates_expiration: 86400
+    updates_url: "{{ jenkins_plugins_url }}"
+    url: "http://localhost:{{ jenkins_http_port }}"
+    with_dependencies: true
+  with_items: "{{ jenkins_plugins_list }}"
+  notify: restart jenkins
+  register: plugin_result
+  until: plugin_result is success
+  retries: 10
+  delay: 10

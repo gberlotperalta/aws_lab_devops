@@ -1,0 +1,116 @@
+- name: Ensure sonar dependencies are installed.
+  apt:
+    name: 
+      - unzip
+      - python-apt
+    state: present
+
+- name: Copy the Sonarqube PostgreSQL setup script
+  template:
+    src: dbsetup.sh
+    dest: /tmp/dbsetup.sh
+    mode: 0744
+    owner: postgres
+  
+- name: Strip carriage returns from scripts to ensure this works from Windows VMs
+  replace:
+    path: "/tmp/dbsetup.sh"
+    regexp: "[\r]$"
+    replace: ""
+
+- name: Create postgres user and DB for Sonarqube
+  become: yes
+  become_user: postgres
+  command: "/tmp/dbsetup.sh {{ sonar_db_password }}"
+
+- name: Download SonarQube.
+  get_url:
+    url: "{{ sonar_download_url }}"
+    dest: "{{ sonar_workspace }}/{{ sonar_archive }}"
+    validate_certs: "{{ sonar_download_validate_certs }}"
+
+
+- name: Extract SonarQube.
+  unarchive:
+    src: "{{ sonar_workspace }}/{{ sonar_archive }}"
+    dest: "{{ sonar_workspace }}"
+    remote_src: yes 
+
+- name: Move SonarQube into right place.
+  command: mv /{{ sonar_workspace }}/{{ sonar_version_directory }} /{{ sonar_workspace }}/sonarqube
+    
+- name: create sonar group
+  group: 
+    name: sonar 
+    state: present
+  
+- name: create sonar user
+  user: 
+    name: sonar
+    state: present 
+    comment: "User for running SonarQube" 
+    group: sonar   
+
+- name: Change ownership to sonar of SonarQube directory
+  file:
+    path: "{{ sonar_workspace }}/sonarqube"
+    state: directory
+    recurse: yes
+    owner: sonar
+    group: sonar
+
+- name: Configure SonarQube DB username
+  lineinfile:
+    path: "{{ sonar_workspace }}/sonarqube/conf/sonar.properties"
+    regexp: "^sonar.jdbc.username="
+    insertafter: "^#sonar.jdbc.username="
+    line: "sonar.jdbc.username={{ sonar_db_username }}"
+
+- name: Configure SonarQube DB password
+  lineinfile:
+    path: "{{ sonar_workspace }}/sonarqube/conf/sonar.properties"
+    regexp: "^sonar.jdbc.password="
+    insertafter: "^#sonar.jdbc.password="
+    line: "sonar.jdbc.password={{ sonar_db_password }}"
+
+- name: Configure SonarQube DB connection string
+  lineinfile:
+    path: "{{ sonar_workspace }}/sonarqube/conf/sonar.properties"
+    regexp: "sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema"
+    insertafter: "^#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema"
+    line: "sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=public"
+
+- name: Configure SonarQube to run as the sonar user
+  lineinfile:
+    path: "{{ sonar_workspace }}/sonarqube/bin/linux-x86-64/sonar.sh"
+    regexp: "RUN_AS_USER=sonar"
+    insertafter: "#RUN_AS_USER="
+    line: "RUN_AS_USER=sonar"
+
+#Fix ElasticSeach issues
+- name: Copy ElasticSeach setup script
+  template:
+    src: essetup.sh
+    dest: /tmp/essetup.sh
+    mode: 0744
+
+- name: Apply Changes to allow ElasticSeach run without issues
+  command: "/tmp/essetup.sh"
+
+
+- name: Configure OS security limits for the sonar user
+  template:
+    src: "sonarqube.limits"
+    dest: "/etc/security/limits.d/99-sonarqube.conf"
+
+- name: Copy the SonarQube service configuration file
+  template:
+    src: "sonarqube.service"
+    dest: "/etc/systemd/system/sonarqube.service"
+
+- name: Enable the SonarQube service
+  systemd:
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    name: sonarqube

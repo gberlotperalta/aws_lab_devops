@@ -1,0 +1,11 @@
+---
+
+- name: Ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: install Java 11
+  apt: 
+    name: default-jre 
+    state: latest 
+    install_recommends: yes
+  

@@ -1,0 +1,11 @@
+---
+
+- name: Install SonarQube
+  hosts: sonar
+  become: true
+  gather_facts: true
+  roles:
+      - swap
+      - java11
+      - postgres
+      - sonar
