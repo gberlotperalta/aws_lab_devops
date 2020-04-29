@@ -3,6 +3,10 @@ variable "app_name" {
   default = "terra_webapp_"
 }
 
+variable "environment_tag" {
+  default = "Production"
+}
+
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
@@ -38,6 +42,3 @@ variable "egress_cidr_block" {
 }
 
 
-variable "environment_tag" {
-  default = "Production"
-}
