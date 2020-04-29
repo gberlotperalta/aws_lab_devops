@@ -54,6 +54,7 @@ resource "aws_route_table" "terra_public_rt" {
   }
 }
 
+/*
 #Create private route table
 resource "aws_route_table" "terra_private_rt" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
@@ -62,7 +63,7 @@ resource "aws_route_table" "terra_private_rt" {
     Name = "${var.app_name}private_rt"
     Environment = "${var.environment_tag}"
   }
-}
+}*/
 
 #Attach internet gateway to vpc
 resource "aws_route" "vpc_internet_access" {
