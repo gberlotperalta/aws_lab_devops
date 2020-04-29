@@ -125,7 +125,7 @@ tags = {
 # create VPC Network access control list
 resource "aws_network_acl" "terra_nacl" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
-  subnet_ids = "${aws_subnet.terra_pub_subnet.id}"
+  subnet_ids = "[${aws_subnet.terra_pub_subnet.id}]"
 
 # allow ingress port 22
   ingress {
