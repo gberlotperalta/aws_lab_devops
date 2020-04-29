@@ -57,7 +57,7 @@ resource "aws_route_table" "terra_public_rt" {
 
 #Modify private route table created by default when vpc is created
 resource "aws_default_route_table" "terra_private_rt" {
-  default_route_table_id = "${aws_vpc.aws_vpc.terra_vpc.default_route_table_id}"
+  default_route_table_id = "${aws_vpc.terra_vpc.default_route_table_id}"
 
   tags = {
     Name = "${var.app_name}private_rt"
