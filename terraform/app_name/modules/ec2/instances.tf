@@ -6,8 +6,10 @@ resource "aws_instance" "ec2server" {
   instance_type = "${var.instance_type}"
   count         = "${var.ec2_count}"
   key_name      = "${var.key_name}"
+  associate_public_ip_address = "${var.associate_public_ip_address}"
+  source_dest_check = "${var.source_dest_check}"
+  vpc_security_group_ids = [ "${var.vpc_security_group_ids}" ]
 }
-
 
 #Private Instances 
 #Create IAM Roles

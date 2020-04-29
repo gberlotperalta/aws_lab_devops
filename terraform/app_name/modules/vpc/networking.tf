@@ -85,6 +85,56 @@ resource "aws_route_table_association" "rt_aso_pri" {
   route_table_id = "${aws_route_table.terra_private_rt.id}"
 }
 
+# Define the security group for public subnet
+resource "aws_security_group" "sgweb" {
+  vpc_id="${aws_vpc.terra_vpc.id}"
+  description = "Allow incoming HTTP connections & SSH access"
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = -1
+    to_port = -1
+    protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks =  ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.app_name}sg_web"
+    Environment = "${var.environment_tag}"
+  }
+
+}
+
+
+
+
 # OutPuts
 output "terra_vpc_id" {
   value = "${aws_vpc.terra_vpc.id}"
@@ -96,4 +146,8 @@ output "terra_public_subnet_id" {
 
 output "terra_private_subnet_id" {
   value = "${aws_subnet.terra_pri_subnet.id}"
+}
+
+output "terra_security_group_web_id" {
+  value = "${aws_security_group.sgweb.id}"
 }
