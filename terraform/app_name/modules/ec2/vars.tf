@@ -11,7 +11,7 @@ variable "ec2_count" {
   default = "2"
 }
 
-variable " associate_public_ip_address" {
+variable "associate_public_ip_address" {
   default = "false"
 }
 
