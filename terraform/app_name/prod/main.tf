@@ -11,7 +11,7 @@ module "vpc" {
   subnet_pri_cidr = "10.0.2.0/24"
 }
 
-module "ec2_jenkins" {
+/*module "ec2_jenkins" {
   source        = "../modules/ec2"
   subnet_id     = "${module.vpc.terra_public_subnet_id}"
   #Use t3a.small cause got 2cpu and 2gb of ram and it's value is: 0,0188 USD per hour
@@ -21,4 +21,4 @@ module "ec2_jenkins" {
   key_name      = "G1B4"
  
 
-}
+}*/
