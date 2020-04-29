@@ -22,5 +22,4 @@ module "ec2_jenkins" {
   associate_public_ip_address = true
   source_dest_check = false
   vpc_security_group_ids = ["${module.vpc.terra_security_group_web_id}"] 
-  
 }
