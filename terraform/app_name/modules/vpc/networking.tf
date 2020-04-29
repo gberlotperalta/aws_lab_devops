@@ -123,7 +123,7 @@ tags = {
 } 
 
 # create VPC Network access control list
-resource "aws_network_acl" "My_VPC_Security_ACL" {
+resource "aws_network_acl" "terra_nacl" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
   subnet_ids = "${aws_subnet.terra_pub_subnet.id}"
 
@@ -200,18 +200,10 @@ output "terra_vpc_id" {
   value = "${aws_vpc.terra_vpc.id}"
 }
 
-output "terra_public_subnet1_id" {
+output "terra_public_subnet_id" {
   value = "${aws_subnet.terra_pub_subnet.id}"
 }
 
-output "terra_private_subnet2_id" {
+output "terra_private_subnet_id" {
   value = "${aws_subnet.terra_pri_subnet.id}"
-}
-
-output "terra_sg_ssh_22_id" {
-  value = "${aws_security_group.terra_sg_ssh_22.id}"
-}
-
-output "terra_sg_http_80_id" {
-  value = "${aws_security_group.terra_sg_http_80.id}"
 }
