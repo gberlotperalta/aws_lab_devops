@@ -14,7 +14,7 @@ resource "aws_vpc" "terra_vpc" {
 resource "aws_subnet" "terra_pub_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
   cidr_block = "${var.subnet_pub_cidr}"
-  map_public_ip_on_launch = true
+  #map_public_ip_on_launch = true
   availability_zone = "${var.availability_zone_pub}"
 
   tags = {
@@ -55,16 +55,15 @@ resource "aws_route_table" "terra_public_rt" {
 }
 
 
-#Modify private route table created by default when vpc is created
-resource "aws_default_route_table" "terra_private_rt" {
-  default_route_table_id = "${aws_vpc.terra_vpc.default_route_table_id}"
+#Create private route table
+resource "aws_route_table" "terra_private_rt" {
+  vpc_id = "${aws_vpc.terra_vpc.id}"
 
   tags = {
     Name = "${var.app_name}private_rt"
     Environment = "${var.environment_tag}"
   }
 }
-
 
 #Attach internet gateway to vpc
 resource "aws_route" "vpc_internet_access" {
@@ -80,11 +79,11 @@ resource "aws_route_table_association" "rt_aso_pub" {
 }
 
 # Route table association with private subnets
-/*
+
 resource "aws_route_table_association" "rt_aso_pri" {
   subnet_id      = "${aws_subnet.terra_pri_subnet.id}"
   route_table_id = "${aws_route_table.terra_private_rt.id}"
-}*/
+}
 
 # OutPuts
 output "terra_vpc_id" {
