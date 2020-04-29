@@ -68,7 +68,7 @@ resource "aws_route_table" "terra_private_rt" {
 resource "aws_route" "vpc_internet_access" {
   route_table_id         = "${aws_route_table.terra_public_rt.id}"
   destination_cidr_block = "${var.destination_cidr_block}"
-  gateway_id             = "${aws_internet_gateway.terra_ig.id}"
+  gateway_id             = "${aws_internet_gateway.terra_igw.id}"
 }
 
 # Route table association with public subnets
