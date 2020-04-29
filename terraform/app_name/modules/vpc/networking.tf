@@ -2,7 +2,6 @@
 resource "aws_vpc" "terra_vpc" {
   cidr_block       = "${var.vpc_cidr}"
   instance_tenancy = "default"
-  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -16,7 +15,7 @@ resource "aws_subnet" "terra_pub_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
   cidr_block = "${var.subnet_pub_cidr}"
   map_public_ip_on_launch = true
-  availability_zone = "${var.availability_zone}"
+  availability_zone = "${var.availability_zone_pub}"
 
   tags = {
     Name = "${var.app_name}pub_subnet"
@@ -28,7 +27,7 @@ resource "aws_subnet" "terra_pub_subnet" {
 resource "aws_subnet" "terra_pri_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
   cidr_block = "${var.subnet_pri_cidr}"
-  availability_zone = "${var.availability_zone}"
+  availability_zone = "${var.availability_zone_pri}"
 
   tags = {
     Name = "${var.app_name}pri_subnet"
@@ -37,7 +36,7 @@ resource "aws_subnet" "terra_pri_subnet" {
 }
 
 #Create internet Gateway
-resource "aws_internet_gateway" "terra_ig" {
+resource "aws_internet_gateway" "terra_igw" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
   tags = {
     Name = "${var.app_name}internet_gateway"
@@ -49,6 +48,11 @@ resource "aws_internet_gateway" "terra_ig" {
 resource "aws_route_table" "terra_public_rt" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
 
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.terra_igw.id}"
+  }
+
   tags = {
     Name = "${var.app_name}public_rt"
     Environment = "${var.environment_tag}"
@@ -59,6 +63,10 @@ resource "aws_route_table" "terra_public_rt" {
 resource "aws_route_table" "terra_private_rt" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
 
+  route {
+    cidr_block = "${var.vpc_cidr}"
+  }
+
   tags = {
     Name = "${var.app_name}private_rt"
     Environment = "${var.environment_tag}"
@@ -66,11 +74,11 @@ resource "aws_route_table" "terra_private_rt" {
 }
 
 #Attach internet gateway to vpc
-resource "aws_route" "vpc_internet_access" {
-  route_table_id         = "${aws_route_table.terra_public_rt.id}"
-  destination_cidr_block = "${var.destination_cidr_block}"
-  gateway_id             = "${aws_internet_gateway.terra_ig.id}"
-}
+#resource "aws_route" "vpc_internet_access" {
+#  route_table_id         = "${aws_route_table.terra_public_rt.id}"
+#  destination_cidr_block = "${var.destination_cidr_block}"
+#  gateway_id             = "${aws_internet_gateway.terra_ig.id}"
+#}
 
 # Route table association with public subnets
 resource "aws_route_table_association" "rt_aso_pub" {
@@ -83,7 +91,6 @@ resource "aws_route_table_association" "rt_aso_pri" {
   subnet_id      = "${aws_subnet.terra_pri_subnet.id}"
   route_table_id = "${aws_route_table.terra_private_rt.id}"
 }
-
 
 # OutPuts
 output "terra_vpc_id" {

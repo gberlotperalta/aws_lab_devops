@@ -17,8 +17,12 @@ variable "subnet_pri_cidr" {
   default = "10.0.2.0/24"
 }
 
-variable "availability_zone" {
+variable "availability_zone_pub" {
      default = "us-east-1a"
+}
+
+variable "availability_zone_pri" {
+     default = "us-east-1b"
 }
 
 variable "destination_cidr_block" {
