@@ -18,3 +18,8 @@ ssh -i "G1B4.pem" ubuntu@ec2-3-83-135-104.compute-1.amazonaws.com
 
 
 Falta crear un IAM para flowlogsrole y hacer que la vpc tengo flowlogrole por defecto
+
+https://medium.com/chrisjerry/architect-using-terraform-dd1ae7da98f4
+https://jee-appy.blogspot.com/2018/07/create-aws-infrastructure-with-terraform.html
+https://medium.com/@brad.simonin/create-an-aws-vpc-and-subnet-using-terraform-d3bddcbbcb6
+

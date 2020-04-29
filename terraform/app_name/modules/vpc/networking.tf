@@ -88,6 +88,7 @@ resource "aws_route_table_association" "rt_aso_pri" {
 # Define the security group for public subnet
 resource "aws_security_group" "sgweb" {
   vpc_id="${aws_vpc.terra_vpc.id}"
+  name = "${var.app_name}sg_web"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
@@ -131,9 +132,6 @@ resource "aws_security_group" "sgweb" {
   }
 
 }
-
-
-
 
 # OutPuts
 output "terra_vpc_id" {
