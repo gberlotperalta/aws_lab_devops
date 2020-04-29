@@ -9,6 +9,7 @@ resource "aws_instance" "ec2server" {
   associate_public_ip_address = "${var.associate_public_ip_address}"
   source_dest_check = "${var.source_dest_check}"
   vpc_security_group_ids = "${var.vpc_security_group_ids}" 
+  tags = "${var.tags}"
 }
 
 #Private Instances 
