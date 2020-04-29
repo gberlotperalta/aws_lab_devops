@@ -132,7 +132,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.ingress_cidr_block}"
     from_port  = 22
     to_port    = 22
   }
@@ -142,7 +142,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.ingress_cidr_block}"
     from_port  = 80
     to_port    = 80
   }
@@ -152,7 +152,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.ingress_cidr_block}"
     from_port  = 1024
     to_port    = 65535
   }
@@ -162,7 +162,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.egress_cidr_block}"
     from_port  = 22 
     to_port    = 22
   }
@@ -172,7 +172,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.egress_cidr_block}"
     from_port  = 80  
     to_port    = 80 
   }
@@ -182,7 +182,7 @@ resource "aws_network_acl" "terra_nacl" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = ["0.0.0.0/0"]
+    cidr_block = "${var.egress_cidr_block}"
     from_port  = 1024
     to_port    = 65535
   }

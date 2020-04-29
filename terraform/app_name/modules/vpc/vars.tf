@@ -21,6 +21,15 @@ variable "destination_cidr_block" {
   default = "0.0.0.0/0"
 }
 
+variable "ingress_cidr_block" {
+  default = "0.0.0.0/0" 
+}
+
+variable "egress_cidr_block" {
+  default =  "0.0.0.0/0" 
+}
+
+
 variable "environment_tag" {
   default = "Production"
 }
