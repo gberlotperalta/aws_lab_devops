@@ -9,12 +9,16 @@ variable "vpc_cidr" {
 
 variable "vpc_id" {}
 
-variable "subnet1_cidr" {
+variable "subnet_pub_cidr" {
   default = "10.0.1.0/24"
 }
 
-variable "subnet2_cidr" {
+variable "subnet_pri_cidr" {
   default = "10.0.2.0/24"
+}
+
+variable "destination_cidr_block" {
+  default = "0.0.0.0/0"
 }
 
 variable "environment_tag" {

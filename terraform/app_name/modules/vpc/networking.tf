@@ -14,7 +14,7 @@ resource "aws_vpc" "terra_vpc" {
 #Create Subnet Public
 resource "aws_subnet" "terra_pub_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
-  cidr_block = "${var.subnet1_cidr}"
+  cidr_block = "${var.subnet_pub_cidr}"
   map_public_ip_on_launch = true
 
   tags = {
@@ -26,7 +26,7 @@ resource "aws_subnet" "terra_pub_subnet" {
 #Create Subnet Private
 resource "aws_subnet" "terra_pri_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
-  cidr_block = "${var.subnet2_cidr}"
+  cidr_block = "${var.subnet_pri_cidr}"
 
   tags = {
     Name = "${var.app_name}pri_subnet"
@@ -41,13 +41,6 @@ resource "aws_internet_gateway" "terra_ig" {
     Name = "${var.app_name}internet_gateway"
     Environment = "${var.environment_tag}"
   }
-}
-
-#Attach internet gateway to vpc
-resource "aws_route" "internet_access" {
-  route_table_id         = "${aws_vpc.terra_vpc.main_route_table_id}"
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.terra_ig.id}"
 }
 
 #Create public route table
@@ -75,6 +68,13 @@ resource "aws_route_table" "terra_private_rt" {
   }
 }
 
+#Attach internet gateway to vpc
+resource "aws_route" "vpc_internet_access" {
+  route_table_id         = "${aws_route_table.terra_public_rt.id}"
+  destination_cidr_block = "${var.destination_cidr_block}"
+  gateway_id             = "${aws_internet_gateway.terra_ig.id}"
+}
+
 # Route table association with public subnets
 resource "aws_route_table_association" "rt_aso_pub" {
   subnet_id      = "${aws_subnet.terra_pub_subnet.id}"
@@ -87,19 +87,27 @@ resource "aws_route_table_association" "rt_aso_pri" {
   route_table_id = "${aws_route_table.terra_private_rt.id}"
 }
 
-
-#Security Groups for SSH (port 22)
-resource "aws_security_group" "terra_sg_ssh_22" {
-  vpc_id = "${aws_vpc.terra_vpc.id}"
-
-  # SSH access from the VPC
+# Create Security Group, allow ingress for port 22 and 80
+resource "aws_security_group" "terra_security_group" {
+  vpc_id       = "${aws_vpc.terra_vpc.id}"
+  
+  # allow ingress of port 22
   ingress {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-  }
+    cidr_blocks = ["0.0.0.0/0"]  
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+  } 
+  
+  # allow ingress of port 80
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]  
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+  } 
 
+  # allow egress of all ports
   egress {
     from_port   = 0
     to_port     = 0
@@ -107,41 +115,87 @@ resource "aws_security_group" "terra_sg_ssh_22" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "terra_sg_ssh_22"
+tags = {
+    Name = "${var.app_name}security_group"
     Environment = "${var.environment_tag}"
   }
-}
 
-#Security Group for Web App (port 80)
-resource "aws_security_group" "terra_sg_http_80" {
+} 
+
+# create VPC Network access control list
+resource "aws_network_acl" "My_VPC_Security_ACL" {
   vpc_id = "${aws_vpc.terra_vpc.id}"
+  subnet_ids = "${aws_subnet.terra_pub_subnet.id}"
 
-  # Http access from web
+# allow ingress port 22
   ingress {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 22
+    to_port    = 22
   }
-
+  
+  # allow ingress port 80 
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 80
+    to_port    = 80
+  }
+  
+  # allow ingress ephemeral ports 
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 1024
+    to_port    = 65535
+  }
+  
+  # allow egress port 22 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 22 
+    to_port    = 22
+  }
+  
+  # allow egress port 80 
+  egress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 80  
+    to_port    = 80 
+  }
+ 
+  # allow egress ephemeral ports
+  egress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = ["0.0.0.0/0"]
+    from_port  = 1024
+    to_port    = 65535
   }
 
-  tags = {
-    Name = "terra_sg_http_80"
+tags = {
+    Name = "${var.app_name}nacl"
     Environment = "${var.environment_tag}"
   }
-}
+
+} 
 
 
-
-# When everything is running create NACL
-
+# OutPuts
 output "terra_vpc_id" {
   value = "${aws_vpc.terra_vpc.id}"
 }
