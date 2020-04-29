@@ -79,10 +79,11 @@ resource "aws_route_table_association" "rt_aso_pub" {
 }
 
 # Route table association with private subnets
+/*
 resource "aws_route_table_association" "rt_aso_pri" {
   subnet_id      = "${aws_subnet.terra_pri_subnet.id}"
   route_table_id = "${aws_route_table.terra_private_rt.id}"
-}
+}*/
 
 # OutPuts
 output "terra_vpc_id" {
