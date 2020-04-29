@@ -14,7 +14,7 @@ resource "aws_vpc" "terra_vpc" {
 resource "aws_subnet" "terra_pub_subnet" {
   vpc_id     = "${aws_vpc.terra_vpc.id}"
   cidr_block = "${var.subnet_pub_cidr}"
-  #map_public_ip_on_launch = true
+  map_public_ip_on_launch = true
   availability_zone = "${var.availability_zone_pub}"
 
   tags = {
