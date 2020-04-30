@@ -59,7 +59,7 @@ ansible-playbook -i aws_hosts.yml playbook-test.yml
 #PROVISIONING USING ANSIBLE (form VM)  
 Run the following commands:  
 - cd ansible/apache  
-- ansible-playbook -i ../../hosts.yml playbook.yml
+- ansible-playbook -i aws_host.yml playbook.yml
 
 
 
