@@ -26,7 +26,7 @@ variable "availability_zone_pub" {
 }
 
 variable "availability_zone_pri" {
-     default = "us-east-1b"
+     default = "us-east-1a"
 }
 
 variable "destination_cidr_block" {
