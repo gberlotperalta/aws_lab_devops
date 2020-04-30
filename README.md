@@ -1,14 +1,14 @@
 # AWS LAB DEVOPS
 How to create infra in AWS with terraform and provision the created ec2 instance with ansible (by using command line and ssm)
 
-Terraform will create:
-1 vpc
-1 internet gateway
-2 subnet (1 public and 1 private )
-2 routes (1 per subnet)
-1 security group (for ssh, http and https)
-1 nacl
-1 IAM role for ssm
+Terraform will create:  
+1 vpc  
+1 internet gateway  
+2 subnet (1 public and 1 private )  
+2 routes (1 per subnet)  
+1 security group (for ssh, http and https)  
+1 nacl  
+1 IAM role for ssm  
 
 ## Prerequisites
 You need to have these programs in place:
@@ -26,11 +26,11 @@ You need to have these programs in place:
 - Fork the repository
 - Clone this repository
 - goto folder aws_lab_devops
-- run the follwing command: vagrant up (this wil)
+- run the follwing command: **vagrant up**
 ![Server was created with vagrant in virtual box](./images/image01.png)  
 **FIGURE 3: You can check the progress also by opening Oracle VM Virtual Box Manager**
-- once script is done, you can connect to the VM by using the following command: vagrant ssh awsdevops
-- once logged in: configure your aws client by running: aws configure
+- once script is done, you can connect to the VM by using the following command: **vagrant ssh awsdevops**
+- once logged in: configure your aws client by running: **aws configure**
 
 ## SECOND STEP
 1) Clone this repository again in linux box.
