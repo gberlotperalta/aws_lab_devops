@@ -1,9 +1,0 @@
----
-
-- name: Test Connectivity
-  hosts: jenkins
-  become: true
-  gather_facts: true
-  roles:
-      - swap
-      

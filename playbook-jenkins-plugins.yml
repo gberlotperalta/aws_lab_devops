@@ -1,9 +1,0 @@
----
-      
-- name: Install Jenkins Plugins
-  hosts: jenkins
-  become: true
-  gather_facts: true
-  roles:
-      - jenkins-plugins
-      

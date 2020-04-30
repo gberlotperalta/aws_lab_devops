@@ -56,7 +56,14 @@ ssh -i "G1B4.pem" ubuntu@ec2-34-207-172-223.compute-1.amazonaws.com
 cd /home/vagrant/aws_lab_devops
 ansible-playbook -i aws_hosts.yml playbook-test.yml 
 
-#PROVISIONING USING AWS SSM
+#PROVISIONING USING ANSIBLE (form VM)  
+Run the following commands:  
+- cd ansible/apache  
+- ansible-playbook -i ../../hosts.yml playbook.yml
+
+
+
+#PROVISIONING USING AWS SSM (Aws System Manager)
 By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)  
 Finally, it's pending to install ansible on the EC2 instance in order to have all the the mandatory requirements. (Remember that the IAM role for SSM was created when we run the terraform scritps).
 To do that run the following commands:
@@ -66,8 +73,20 @@ sudo apt-add-repository ppa:ansible/ansible -y
 sudo apt-get update -y
 sudo apt-get install ansible -y
 
+Next, goto Aws System Manager in your aws console and perform the following steps:  
+- Click on State Manager and click on create association.  
+- As name type "Install-Apache-from-Ansible".  
+- Document, search for "AWS-ApplyAnsiblePlaybooks" and select it.  
+- Parameters, source type -> Github.  
+- Source Info -> {"owner":"gberlotperalta","repository":"aws_lab_devops","path":"ansible/apache","getOptions":"branch:master"}  
+- Install Dependencies -> True  
+- Playbokk File -> playbook.yml
+- Leave the rest as it's.  
+- Select your aws ecs instance.  
+- No schedule. 
+- Click on Create Association.
 
-Ver testansible role.
+
 
 
 
