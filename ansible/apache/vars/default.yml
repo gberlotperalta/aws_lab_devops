@@ -1,0 +1,6 @@
+---
+app_user: "youruser"
+http_host: "test ansible from https://github.com/gberlotperalta/aws_lab_devops"
+http_conf: "test_ansible.conf"
+http_port: "80"
+disable_default: true
