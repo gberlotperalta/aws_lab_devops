@@ -50,13 +50,10 @@ cd /home/vagrant
 chmod 400 <Your_Pem_File_Name>.pem  
 
 - Test connectivity by ussing ssh type:  
-ssh -i "G1B4.pem" ubuntu@ec2-34-207-172-223.compute-1.amazonaws.com
+ssh -i "G1B4.pem" ubuntu@ec2-54-86-147-122.compute-1.amazonaws.com
 
-- Run the following command
-cd /home/vagrant/aws_lab_devops
-ansible-playbook -i aws_hosts.yml playbook-test.yml 
 
-#PROVISIONING USING ANSIBLE (form VM)  
+#PROVISIONING USING ANSIBLE (from vagrant VM)  
 Run the following commands:  
 - cd ansible/apache  
 - ansible-playbook -i aws_host.yml playbook.yml
@@ -64,7 +61,8 @@ Run the following commands:
 
 
 #PROVISIONING USING AWS SSM (Aws System Manager)
-By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)  
+By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)
+
 Finally, it's pending to install ansible on the EC2 instance in order to have all the the mandatory requirements. (Remember that the IAM role for SSM was created when we run the terraform scritps).
 To do that run the following commands:
 
@@ -90,7 +88,11 @@ Next, goto Aws System Manager in your aws console and perform the following step
 
 
 
-Falta crear un IAM para SSM y hacer que la vpc tengo flowlogrole por defecto
+Falta: 
+- crear un IAM para SSM (Test_Ansible) 
+- user data
+
+y hacer que la vpc tengo flowlogrole por defecto
 
 https://medium.com/chrisjerry/architect-using-terraform-dd1ae7da98f4
 https://jee-appy.blogspot.com/2018/07/create-aws-infrastructure-with-terraform.html
