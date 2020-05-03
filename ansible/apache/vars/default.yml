@@ -1,6 +1,0 @@
----
-app_user: "ubuntu"
-http_host: "aws_test_ansible"
-http_conf: "aws_test_ansible"
-http_port: "80"
-disable_default: true
