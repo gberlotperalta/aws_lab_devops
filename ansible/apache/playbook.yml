@@ -10,7 +10,7 @@
       apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
       loop: [ 'aptitude' ]
 
-    - name: Install Apache
+    - name: Install Apache 2
       apt: name=apache2 update_cache=yes state=latest
 
     - name: Enabled mod_rewrite
@@ -21,7 +21,7 @@
     - name: Copy index test page
       template:
         src: "files/index.html"
-        dest: "/var/www/index.html"
+        dest: "/var/www/html/index.html"
 
 
   handlers:
