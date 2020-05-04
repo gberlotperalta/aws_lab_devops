@@ -11,6 +11,11 @@ module "vpc" {
   subnet_pri_cidr = "10.0.2.0/24"
 }
 
+module "iam_ssm" {
+  source        = "../modules/iam/ssm"
+}
+
+
 module "ec2_web" {
   source        = "../modules/ec2"
   subnet_id     = "${module.vpc.terra_public_subnet_id}"
@@ -21,7 +26,7 @@ module "ec2_web" {
   associate_public_ip_address = true
   source_dest_check = false
   vpc_security_group_ids = ["${module.vpc.terra_security_group_web_id}"] 
-  iam_instance_profile = "${module.iam.ssm.terra_iam_instance_profile_name_for_ssm}"
+  iam_instance_profile = "${module.iam_ssm.terra_iam_instance_profile_name_for_ssm}"
 
   tags = {
     Name = "web"
