@@ -11,18 +11,19 @@ module "vpc" {
   subnet_pri_cidr = "10.0.2.0/24"
 }
 
-module "ec2_jenkins" {
+module "ec2_web" {
   source        = "../modules/ec2"
   subnet_id     = "${module.vpc.terra_public_subnet_id}"
-  #Use t3a.small cause got 2cpu and 2gb of ram and it's value is: 0,0188 USD per hour
-  instance_type = "t3a.small"
+  instance_type = "t2.micro"
   ami_id        = "ami-085925f297f89fce1"
   ec2_count     = 1
   key_name      = "G1B4"
   associate_public_ip_address = true
   source_dest_check = false
   vpc_security_group_ids = ["${module.vpc.terra_security_group_web_id}"] 
+  iam_instance_profile = "${module.iam.ssm.terra_iam_instance_profile_name_for_ssm}"
+
   tags = {
-    Name = "jenkins"
+    Name = "web"
   }
 }
