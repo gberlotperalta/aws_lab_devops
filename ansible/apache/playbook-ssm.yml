@@ -1,6 +1,6 @@
-# Apache on Ubuntu 18.04
+# Apache2 on Ubuntu 18.04
 ---
-- hosts: web
+- hosts: localhost
   become: true
 
   tasks:

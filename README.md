@@ -64,12 +64,9 @@ Run the following commands:
 By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)
 
 Finally, it's pending to install ansible on the EC2 instance in order to have all the the mandatory requirements. (Remember that the IAM role for SSM was created when we run the terraform scritps).
-To do that run the following commands:
 
+- To do that run the following commands: Check userdata.sh
 
-sudo apt-add-repository ppa:ansible/ansible -y
-sudo apt-get update -y
-sudo apt-get install ansible -y
 
 Next, goto Aws System Manager in your aws console and perform the following steps:  
 - Click on State Manager and click on create association.  
@@ -82,10 +79,8 @@ Next, goto Aws System Manager in your aws console and perform the following step
 - Leave the rest as it's.  
 - Select your aws ecs instance.  
 - No schedule. 
+- Compliance Severity -> High 
 - Click on Create Association.
-
-
-
 
 
 Falta: 
