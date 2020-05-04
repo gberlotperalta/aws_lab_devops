@@ -60,12 +60,11 @@ Run the following commands:
 
 
 
-#PROVISIONING USING AWS SSM (Aws System Manager)
-By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)
-
-Finally, it's pending to install ansible on the EC2 instance in order to have all the the mandatory requirements. (Remember that the IAM role for SSM was created when we run the terraform scritps).
-
-- To do that run the following commands: Check userdata.sh
+#PROVISIONING USING AWS SSM (from Aws System Manager)
+Prerequistes to run ansible from SSM 
+1) SSM Agent must be installed on the ec2 instance (By default aws ssm agent is installed in ubuntu 18.04 lts. In case you find some issues you can find more details [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-manual-agent-install.html#agent-install-ubuntu)
+2) Ansible should be installed on the ec2 (Ansible was installed when the ec2 instance was created, check userdata.sh)
+3) IAM role for SSM must be created (done, when the ec2 instance was created, see )
 
 
 Next, goto Aws System Manager in your aws console and perform the following steps:  
@@ -75,7 +74,7 @@ Next, goto Aws System Manager in your aws console and perform the following step
 - Parameters, source type -> Github.  
 - Source Info -> {"owner":"gberlotperalta","repository":"aws_lab_devops","path":"ansible/apache","getOptions":"branch:master"}  
 - Install Dependencies -> True  
-- Playbokk File -> playbook.yml
+- Playbokk File -> playbook-ssm.yml
 - Leave the rest as it's.  
 - Select your aws ecs instance.  
 - No schedule. 

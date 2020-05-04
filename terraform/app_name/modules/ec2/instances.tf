@@ -11,7 +11,7 @@ resource "aws_instance" "ec2server" {
   tags = "${var.tags}"
 }
 
-
+#Pending userdata con script
 
 
 
