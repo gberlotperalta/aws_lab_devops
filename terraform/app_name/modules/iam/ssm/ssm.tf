@@ -9,7 +9,7 @@ resource "aws_iam_role_policy" "terra_ssm_policy" {
 }
 
 data "template_file" "assume-role-policy" {
-  template = "${file("${path.module}/assume_role_policy.json")}"
+  template = "${file("${path.module}/assume-role-policy.json")}"
 }
 
 resource "aws_iam_role" "terra_ssm_role" {
