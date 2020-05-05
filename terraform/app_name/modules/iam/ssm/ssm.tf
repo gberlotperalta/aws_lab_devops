@@ -22,3 +22,7 @@ resource "aws_iam_instance_profile" "terra_ssm_profile" {
   name = "terra_ssm_profile"
   role = "${aws_iam_role.terra_ssm_role.name}"
 }
+
+output "terra_iam_instance_profile_name_for_ssm" {
+  value = "${aws_iam_instance_profile.terra_ssm_profile.role}"
+}
