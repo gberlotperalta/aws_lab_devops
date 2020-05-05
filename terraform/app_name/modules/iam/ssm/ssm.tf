@@ -13,16 +13,15 @@ data "template_file" "assume-role-policy" {
 }
 
 resource "aws_iam_role" "terra_ssm_role" {
-  name = "terra_ssm_role"
+  name = "terra_ssm_role_for_ec2"
   assume_role_policy = "${data.template_file.assume-role-policy.rendered}"
 }
 
 resource "aws_iam_instance_profile" "terra_ssm_profile" {
-  #Only Change this
   name = "terra_ssm_profile"
   role = "${aws_iam_role.terra_ssm_role.name}"
 }
 
 output "terra_iam_instance_profile_name_for_ssm" {
-  value = "${aws_iam_instance_profile.terra_ssm_profile.role}"
+  value = "${aws_iam_instance_profile.terra_ssm_profile.name}"
 }

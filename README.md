@@ -82,12 +82,8 @@ Next, goto Aws System Manager in your aws console and perform the following step
 - Click on Create Association.
 
 
-Falta: 
-- user data
-
 y hacer que la vpc tengo flowlogrole por defecto
 
 https://medium.com/chrisjerry/architect-using-terraform-dd1ae7da98f4
 https://jee-appy.blogspot.com/2018/07/create-aws-infrastructure-with-terraform.html
 https://medium.com/@brad.simonin/create-an-aws-vpc-and-subnet-using-terraform-d3bddcbbcb6
-https://jee-appy.blogspot.com/2018/07/create-aws-infrastructure-with-terraform.html
