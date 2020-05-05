@@ -13,6 +13,8 @@ module "vpc" {
 
 module "iam_ssm" {
   source        = "../modules/iam/ssm"
+  assume_role_policy = "module.iam_ssm."
+  
 }
 
 
