@@ -8,6 +8,7 @@ resource "aws_instance" "ec2server" {
   source_dest_check = "${var.source_dest_check}"
   vpc_security_group_ids = "${var.vpc_security_group_ids}" 
   iam_instance_profile = "${var.iam_instance_profile}"
+  user_data = "${car.user_data}"
   tags = "${var.tags}"
 }
 

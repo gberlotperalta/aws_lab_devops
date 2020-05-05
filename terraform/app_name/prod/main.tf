@@ -27,6 +27,7 @@ module "ec2_web" {
   source_dest_check = false
   vpc_security_group_ids = ["${module.vpc.terra_security_group_web_id}"] 
   iam_instance_profile = "${module.iam_ssm.terra_iam_instance_profile_name_for_ssm}"
+  user_data = "${file("ansible_userdata.sh")}"
 
   tags = {
     Name = "web"

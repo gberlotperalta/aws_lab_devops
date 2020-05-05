@@ -83,7 +83,6 @@ Next, goto Aws System Manager in your aws console and perform the following step
 
 
 Falta: 
-- crear un IAM para SSM (Test_Ansible) 
 - user data
 
 y hacer que la vpc tengo flowlogrole por defecto
